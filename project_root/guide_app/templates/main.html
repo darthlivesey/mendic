@@ -7,15 +7,13 @@
     <link rel="stylesheet" href="{% static 'main.css' %}">
 </head>
 <body>
-    <div id="map" style="width: 600px; height: 400px;"></div>
-
     <div class="wrapper">
         <header>
             <div class="container">
                 <nav class="nav">
                     <ul>
                         <li><a href="{% url 'mendic' %}">Главная</a></li>
-                        <li><a href="essay1.html">Эссе№1</a></li>
+                        <li><a href="{% url 'registration' %}">Sing up/sing in</a></li>
                         <li><a href="essay2.html">Эссе№2</a></li>
                         <li><a href="essay3.html">Эссе№3</a></li>
                         <li><a href="formule1.html">Формула жизни</a></li>
@@ -26,18 +24,16 @@
         </header>
 
         <div class="content">   
-            <!-- Ваш контент здесь -->
+            <!-- Карта теперь занимает всю доступную высоту -->
+            <div id="map"></div>
+            
+            <!-- Остальной контент здесь -->
         </div>
     </div>
 
     <style>
         body {
-            background: url("{% static 'bg.png' %}") no-repeat center center fixed;
-            background-size: cover;
-        }
-        #map {
-            border: 1px solid #ccc;
-            margin: 20px auto;
+            background: url("{% static 'bg.png' %}");
         }
     </style>
 
@@ -58,7 +54,7 @@
 
             ymaps.ready(function () {
                 var myMap = new ymaps.Map('map', {
-                    center: [55.733842, 37.588144], // Обратите внимание на порядок координат!
+                    center: [55.733842, 37.588144],
                     zoom: 10
                 }, {
                     searchControlProvider: 'yandex#search'

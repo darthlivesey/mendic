@@ -2,7 +2,6 @@ body {
     font-family: 'Times New Roman';
     position: relative;
     background: url('bg.png');
-    /* background-size: 50% 100%; */
     color: #181818;
     margin: 0;
     padding: 0;
@@ -15,11 +14,10 @@ body {
   z-index: 1;
   background: linear-gradient(-30deg, oklch(from #432818 0.2 c h / 0.45), transparent,oklch(from #432818 0.1 c h / 0.45)),
     linear-gradient(to bottom, oklch(68.805% 0.03927 48.054), oklch(68.805% 0.03927 48.054));
-  /* background: rgb(108, 97, 87); */
   border-radius: 20px 20px 20px 20px;
-  width: 75%;
+  width: 90%;
   min-height: 100vh;
-  margin: 0 auto;
+  margin: 20px auto; /* Добавил отступ сверху */
   padding: 0 30px;
   border: 3px solid #ef7e33;
   box-shadow: 0 0 25px oklch(from #ef7e33 l c h);
@@ -30,13 +28,16 @@ body {
   left: 0;
 }
 header {
-  width: 75%;
-  border-radius: 0px 0px 20px 20px;
+  width: 100%; /* Изменил на 100% чтобы занимал всю ширину wrapper */
+  border-radius: 20px 20px 0px 0px; /* Закругление только сверху */
   border-bottom: 3px solid #ef7e33;
-  /* border:  solid #ef7e33; */
-  box-shadow: 0 0 025px oklch(from #ef7e33 l c h);
+  border-top: 3px solid #ef7e33; /* Добавил границу сверху */
+  border-left: 3px solid #ef7e33; /* Добавил границы по бокам */
+  border-right: 3px solid #ef7e33;
+  box-shadow: 0 0 25px oklch(from #ef7e33 l c h);
   background: #3a2c20;
   padding: 15px 30px;
+  margin-top: -3px; /* Компенсируем границу */
 }
 .container {
   margin: 0 auto;
@@ -46,19 +47,31 @@ header {
   flex-direction: column;
 }
 .content {
-  width: 90%;
+  width: 100%;
   padding: 15px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1; /* Добавлено: растягивает контент на всю доступную высоту */
 }
 .nav ul {
   list-style: none;
   display: flex;
   gap: 20px;
+  justify-content: center; /* Центрируем навигацию */
+  margin: 0;
+  padding: 0;
 }
 .nav a {
   color: rgb(222, 217, 174);
   text-decoration: none;
   font-size: 20px;
+  transition: color 0.3s ease;
+}
+.nav a:hover {
+  color: #ef7e33;
+  text-decoration: none;
 }
 ul {
     list-style-type: none;
@@ -80,4 +93,24 @@ a:hover {
 img{
   width: 300px;
   height: 400px;
+}
+
+/* Стили для карты */
+#map {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 100%;
+  height: 100%; /* Изменено: растягивается на всю высоту родителя */
+  min-height: 400px; /* Минимальная высота */
+  flex: 1; /* Добавлено: карта занимает все доступное пространство */
+}
+
+/* Дополнительный контейнер для лучшего контроля */
+.map-container {
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  display: flex;
 }
