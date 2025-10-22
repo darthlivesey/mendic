@@ -7,6 +7,9 @@ YANDEX_MAPS_URL = "https://api-maps.yandex.ru/v3/?apikey=35fbf851-eea3-4819-bf08
 def mendic(request):
     return render(request, "main.html")
 
+def registration(request):
+    return render(request, "reg.html")
+
 # def maps_proxy(request):
 #     try:
 #         response = requests.get(YANDEX_MAPS_URL)

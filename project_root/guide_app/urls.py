@@ -6,5 +6,6 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.mendic, name='mendic'),
+    path('registration/', views.registration, name='registration'),
     # path('maps-proxy', views.maps_proxy, name='maps_proxy'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
