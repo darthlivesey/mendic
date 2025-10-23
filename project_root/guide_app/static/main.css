@@ -29,14 +29,14 @@ body {
 }
 header {
   width: 100%; /* Изменил на 100% чтобы занимал всю ширину wrapper */
-  border-radius: 20px 20px 0px 0px; /* Закругление только сверху */
+  border-radius: 20px 20px 20px 20px; /* Закругление только сверху */
   border-bottom: 3px solid #ef7e33;
   border-top: 3px solid #ef7e33; /* Добавил границу сверху */
   border-left: 3px solid #ef7e33; /* Добавил границы по бокам */
   border-right: 3px solid #ef7e33;
   box-shadow: 0 0 25px oklch(from #ef7e33 l c h);
   background: #3a2c20;
-  padding: 15px 30px;
+  padding: 10px 15px;
   margin-top: -3px; /* Компенсируем границу */
 }
 .container {
@@ -113,4 +113,46 @@ img{
   height: 100%;
   flex: 1;
   display: flex;
+}
+/* Мобильная оптимизация */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+    
+    /* Увеличиваем область клика для ссылок */
+    a, button {
+        min-height: 44px;
+        min-width: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Улучшаем читаемость текста */
+    p, li {
+        line-height: 1.8;
+        font-size: 16px;
+    }
+}
+
+/* Предотвращение выделения текста при тапе */
+.no-select {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Плавная прокрутка */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Оптимизация анимаций */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }

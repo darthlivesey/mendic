@@ -3,8 +3,165 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#000000">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>mentulaDictatura</title>
     <link rel="stylesheet" href="{% static 'main.css' %}">
+    <style>
+        /* Мобильные стили */
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            background: url("{% static 'bg.png' %}") no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', Arial, sans-serif;
+            line-height: 1.6;
+            touch-action: manipulation;
+        }
+
+        /* Адаптивная карта */
+        #map {
+            width: 100%;
+            height: 300px;
+            border: 1px solid #ccc;
+            margin: 10px 0;
+        }
+
+        /* Адаптивная навигация */
+        .wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            /* position: sticky; */
+            top: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 100%;
+            padding: 0 15px;
+        }
+
+        .nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .nav li {
+            width: 100%;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav li:last-child {
+            border-bottom: none;
+        }
+
+        .nav a {
+            display: block;
+            padding: 15px 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+
+        .nav a:hover,
+        .nav a:active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px 15px;
+            width: 100%;
+        }
+
+        /* Улучшения для touch устройств */
+        @media (min-width: 768px) {
+            .nav ul {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            
+            .nav li {
+                width: auto;
+                flex: 1;
+                border-bottom: none;
+                border-right: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .nav li:last-child {
+                border-right: none;
+            }
+        }
+
+        /* Портретная ориентация */
+        @media (max-width: 480px) and (orientation: portrait) {
+            #map {
+                height: 250px;
+            }
+            
+            .nav a {
+                padding: 12px 15px;
+                font-size: 14px;
+            }
+        }
+
+        /* Ландшафтная ориентация */
+        @media (max-width: 900px) and (orientation: landscape) {
+            #map {
+                height: 200px;
+            }
+            
+            .nav ul {
+                flex-direction: row;
+            }
+            
+            .nav li {
+                width: auto;
+                flex: 1;
+            }
+        }
+
+        /* Большие экраны */
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+        }
+
+        /* Улучшения для быстрого отклика */
+        button, a {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        /* Предотвращение масштабирования при двойном тапе */
+        * {
+            -webkit-text-size-adjust: 100%;
+        }
+    </style>
 </head>
 <body>
     <div class="wrapper">
@@ -13,64 +170,87 @@
                 <nav class="nav">
                     <ul>
                         <li><a href="{% url 'mendic' %}">Главная</a></li>
-                        <li><a href="{% url 'registration' %}">Sing up/sing in</a></li>
-                        <li><a href="essay2.html">Эссе№2</a></li>
-                        <li><a href="essay3.html">Эссе№3</a></li>
-                        <li><a href="formule1.html">Формула жизни</a></li>
-                        <li><a href="game.html">Игра</a></li>
+                        <li><a href="{% url 'registration' %}">Sign up/sign in</a></li>
                     </ul>
                 </nav>
             </div>
         </header>
 
-        <div class="content">   
-            <!-- Карта теперь занимает всю доступную высоту -->
-            <div id="map"></div>
-            
-            <!-- Остальной контент здесь -->
+        <div class="content">
+            <!-- Карта -->
+            <div id="map">
+            </div>
         </div>
     </div>
 
-    <style>
-        body {
-            background: url("{% static 'bg.png' %}");
-        }
-    </style>
-
-    <!-- Яндекс Карты API 2.1 -->
+    <!-- Яндекс Карты API 2.1 (лучше работает на мобильных) -->
     <script src="https://api-maps.yandex.ru/2.1/?apikey=35fbf851-eea3-4819-bf08-558fcbb08e39&lang=ru_RU" type="text/javascript"></script>
     
     <script>
+        // Функция для инициализации карты с мобильной оптимизацией
         function initMap() {
             if (typeof ymaps === 'undefined') {
                 document.getElementById('map').innerHTML = `
-                    <div style="padding: 20px; text-align: center; color: red;">
-                        <p>Не удалось загрузить карту</p>
-                        <p>Используется статичное изображение</p>
+                    <div style="padding: 20px; text-align: center; color: #666;">
+                        <p>Карта временно недоступна</p>
                     </div>
                 `;
                 return;
             }
 
             ymaps.ready(function () {
+                // Определяем размер карты в зависимости от устройства
+                const isMobile = window.innerWidth <= 768;
+                
                 var myMap = new ymaps.Map('map', {
-                    center: [47.993404, 37.815349],
-                    zoom: 10
-                }, {
-                    searchControlProvider: 'yandex#search'
+                    center: [55.733842, 37.588144],
+                    zoom: isMobile ? 9 : 10,
+                    controls: isMobile ? 
+                        ['zoomControl', 'fullscreenControl'] : 
+                        ['zoomControl', 'typeSelector', 'fullscreenControl']
                 });
 
                 // Добавляем метку
-                var myPlacemark = new ymaps.Placemark([47.993404, 37.815349], {
-                    hintContent: 'Скиф центр',
-                    balloonContent: 'Центр мира'
+                var myPlacemark = new ymaps.Placemark([55.733842, 37.588144], {
+                    hintContent: 'Москва',
+                    balloonContent: 'Столица России'
+                }, {
+                    // Оптимизация для мобильных
+                    preset: 'islands#redIcon',
+                    iconColor: '#ff0000'
                 });
 
                 myMap.geoObjects.add(myPlacemark);
+
+                // Обработчик изменения ориентации
+                window.addEventListener('resize', function() {
+                    myMap.container.fitToViewport();
+                });
             });
         }
 
-        document.addEventListener('DOMContentLoaded', initMap);
+        // Загрузка при готовности DOM
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initMap);
+        } else {
+            initMap();
+        }
+
+        // Предотвращение стандартного поведения жестов
+        document.addEventListener('touchstart', function(e) {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(e) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
     </script>
 </body>
 </html>
