@@ -54,16 +54,16 @@
 
             ymaps.ready(function () {
                 var myMap = new ymaps.Map('map', {
-                    center: [55.733842, 37.588144],
+                    center: [47.993404, 37.815349],
                     zoom: 10
                 }, {
                     searchControlProvider: 'yandex#search'
                 });
 
                 // Добавляем метку
-                var myPlacemark = new ymaps.Placemark([55.733842, 37.588144], {
-                    hintContent: 'Москва',
-                    balloonContent: 'Столица России'
+                var myPlacemark = new ymaps.Placemark([47.993404, 37.815349], {
+                    hintContent: 'Скиф центр',
+                    balloonContent: 'Центр мира'
                 });
 
                 myMap.geoObjects.add(myPlacemark);
